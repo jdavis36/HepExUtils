@@ -15,6 +15,8 @@ from array import *
 import random
 from collections import Counter
 from decimal import *
+from OnShell_Category import *
+# Load Root Macro#
 
 def main(argv):
     inputfile = ''
@@ -89,6 +91,9 @@ def main(argv):
         for branch in branchlist:
             branchdict[branch] = [] #np.array([])
         
+	#======================  load splines ========================#
+
+	spline_list = init_spline()
 	
         for tree in ["candTree", "candTree_failed"]:
         #for tree in ["candTree"]:
@@ -96,6 +101,7 @@ def main(argv):
 
             f = ROOT.TFile(filename)
             t = f.Get("ZZTree/"+tree)
+            t.Print()
             treebranches = [ x.GetName() for x in t.GetListOfBranches() ]
             print t.GetEntries()
 	    for i, entry in enumerate(t, start=1):
@@ -111,20 +117,11 @@ def main(argv):
 
                     M = t.ZZMass
     #               M = t.GenHMass
-                    tag = "none"
-		    
-		#=========================== Setting Pt Cut for Gamma H ==========================
-		    Photon_Pt_Cut = 100 #GeV
-		    if len(t.PhotonIsCutBasedLooseID)!=0:
-			if t.PhotonPt[0]>Photon_Pt_Cut:
-			   tag = "gammaH"
-		        
+                    tag =  Tag(t.nExtraLep, t.nExtraZ, t.nCleanedJetsPt30, t.nCleanedJetsPt30BTagged_bTagSF, t.JetQGLikelihood, t.p_JJQCD_SIG_ghg2_1_JHUGen_JECNominal, t.p_JQCD_SIG_ghg2_1_JHUGen_JECNominal, t.p_JJVBF_SIG_ghv1_1_JHUGen_JECNominal, t.p_JVBF_SIG_ghv1_1_JHUGen_JECNominal, t.pAux_JVBF_SIG_ghv1_1_JHUGen_JECNominal, t.p_HadWH_SIG_ghw1_1_JHUGen_JECNominal, t.p_HadZH_SIG_ghz1_1_JHUGen_JECNominal, t.p_HadWH_mavjj_JECNominal, t.p_HadWH_mavjj_true_JECNominal, t.p_HadZH_mavjj_JECNominal, t.p_HadZH_mavjj_true_JECNominal, t.JetPhi, t.ZZMass, t.ZZPt, t.PFMET, t.PhotonIsCutBasedLooseID,t.PhotonPt, False, False, spline_list)
 		#=========================== Saving category tag ===========================
                     
-                    if tag == "gammaH": branchdict["EventTag"].append(1) #= np.append(branchdict["EventTag"], 1)
-                    else: branchdict["EventTag"].append(0) # = np.append(branchdict["EventTag"], 0)
-
-
+                    branchdict["EventTag"].append(tag) 
+		
                 #=========================== Loop over branches to copy values ===========================
             
                     for branchcand in branchlist:
