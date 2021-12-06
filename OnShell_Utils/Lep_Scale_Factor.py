@@ -7,67 +7,67 @@ def init_LEPSF():
    h_Ele_notCracks_2016 = root_file.Get("EGamma_SF2D").Clone()
 
    fipEleCracks_2016 = "LepSF/ElectronSF_Legacy_2016_Gap.root"
-   root_file = ROOT.TFile.Open(fipEleCracks_2016.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipEleCracks_2016,"READ")
    h_Ele_Cracks_2016 = root_file.Get("EGamma_SF2D").Clone()
 
    fipEleReco_highPt_2016 = "LepSF/Ele_Reco_2016.root"
-   root_file = ROOT.TFile.Open(fipEleReco_highPt_2016.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipEleReco_highPt_2016,"READ")
    h_Ele_Reco_highPT_2016 = root_file.Get("EGamma_SF2D").Clone()
 
    fipEleReco_lowPt_2016 = "LepSF/Ele_Reco_LowEt_2016.root"
-   root_file = ROOT.TFile.Open(fipEleReco_lowPt_2016.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipEleReco_lowPt_2016,"READ")
    h_Ele_Reco_lowPT_2016 = root_file.Get("EGamma_SF2D").Clone()
 
    # 2017 Electrons
    fipEleNotCracks_2017 = "LepSF/ElectronSF_Legacy_2017_NoGap.root"
-   root_file = ROOT.TFile.Open(fipEleNotCracks_2017.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipEleNotCracks_2017,"READ")
    h_Ele_notCracks_2017 = root_file.Get("EGamma_SF2D").Clone()
 
    fipEleCracks_2017 = "LepSF/ElectronSF_Legacy_2017_Gap.root"
-   root_file = ROOT.TFile.Open(fipEleCracks_2017.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipEleCracks_2017,"READ")
    h_Ele_Cracks_2017 = root_file.Get("EGamma_SF2D").Clone()
 
    fipEleReco_highPt_2017 = "LepSF/Ele_Reco_2017.root"
-   root_file = ROOT.TFile.Open(fipEleReco_highPt_2017.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipEleReco_highPt_2017,"READ")
    h_Ele_Reco_highPT_2017 = root_file.Get("EGamma_SF2D").Clone()
 
    fipEleReco_lowPt_2017 = "LepSF/Ele_Reco_LowEt_2017.root"
-   root_file = ROOT.TFile.Open(fipEleReco_lowPt_2017.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipEleReco_lowPt_2017,"READ")
    h_Ele_Reco_lowPT_2017 = root_file.Get("EGamma_SF2D").Clone()
 
 
    # 2018 Electrons
    fipEleNotCracks_2018 = "LepSF/ElectronSF_Legacy_2018_NoGap.root"
-   root_file = ROOT.TFile.Open(fipEleNotCracks_2018.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipEleNotCracks_2018,"READ")
    h_Ele_notCracks_2018 = root_file.Get("EGamma_SF2D").Clone()
 
    fipEleCracks_2018 = "LepSF/ElectronSF_Legacy_2018_Gap.root"
-   root_file = ROOT.TFile.Open(fipEleCracks_2018.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipEleCracks_2018,"READ")
    h_Ele_Cracks_2018 = root_file.Get("EGamma_SF2D").Clone()
 
    fipEleReco_highPt_2018 = "LepSF/Ele_Reco_2018.root"
-   root_file = ROOT.TFile.Open(fipEleReco_highPt_2018.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipEleReco_highPt_2018,"READ")
    h_Ele_Reco_highPT_2018 = root_file.Get("EGamma_SF2D").Clone()
 
    fipEleReco_lowPt_2018 = "LepSF/Ele_Reco_LowEt_2018.root"
-   root_file = ROOT.TFile.Open(fipEleReco_lowPt_2018.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipEleReco_lowPt_2018,"READ")
    h_Ele_Reco_lowPT_2018 = root_file.Get("EGamma_SF2D").Clone()
 
    # 2016 Muons
    fipMu_2016 = "LepSF/final_HZZ_muon_SF_2016RunB2H_legacy_newLoose_newIso_paper.root"
-   root_file = ROOT.TFile.Open(fipMu_2016.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipMu_2016,"READ")
    h_Mu_SF_2016  = root_file.Get("FINAL").Clone()
    h_Mu_Unc_2016 = root_file.Get("ERROR").Clone()
 
    # 2017 Muons
    fipMu_2017 = "LepSF/final_HZZ_muon_SF_2017_newLooseIso_mupogSysts_paper.root"
-   root_file = ROOT.TFile.Open(fipMu_2017.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipMu_2017,"READ")
    h_Mu_SF_2017  = root_file.Get("FINAL").Clone()
    h_Mu_Unc_2017 = root_file.Get("ERROR").Clone()
 
    # 2018 Muons
    fipMu_2018 = "LepSF/final_HZZ_muon_SF_2018RunA2D_ER_newLoose_newIso_paper.root"
-   root_file = ROOT.TFile.Open(fipMu_2018.Data(),"READ")
+   root_file = ROOT.TFile.Open(fipMu_2018,"READ")
    h_Mu_SF_2018  = root_file.Get("FINAL").Clone()
    h_Mu_Unc_2018 = root_file.Get("ERROR").Clone()
 
