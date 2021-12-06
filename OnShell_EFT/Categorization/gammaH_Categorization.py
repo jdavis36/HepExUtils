@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import sys, getopt
+sys.path.insert(0, '/afs/cern.ch/work/j/jejeffre/public/HEP_Ex_Tools/HepExUtils/OnShell_Utils/')
 import os
 import glob
 import ROOT
@@ -110,15 +111,34 @@ def main(argv):
 	    
 	    #### create branches to be calculated ####
 	    eventTag=[]
+	    Bin40=[]
             for i, entry in enumerate(t):
         	#=========================== Tagging event by category ===========================
 	          if i % 1000 == 0:
         	     print (i)
 
 	          M = t.ZZMass
+		  Bin40.append(f.Get("ZZTree/Counters").GetBinContent(40))
+		  #Checks to make sure values wont crash tagger if they do crash we will return -999 on the tagger output array#
 
-        	  tag =  Tag(t.nExtraLep, t.nExtraZ, t.nCleanedJetsPt30, t.nCleanedJetsPt30BTagged_bTagSF, t.JetQGLikelihood, t.p_JJQCD_SIG_ghg2_1_JHUGen_JECNominal, t.p_JQCD_SIG_ghg2_1_JHUGen_JECNominal, t.p_JJVBF_SIG_ghv1_1_JHUGen_JECNominal, t.p_JVBF_SIG_ghv1_1_JHUGen_JECNominal, t.pAux_JVBF_SIG_ghv1_1_JHUGen_JECNominal, t.p_HadWH_SIG_ghw1_1_JHUGen_JECNominal, t.p_HadZH_SIG_ghz1_1_JHUGen_JECNominal, t.p_HadWH_mavjj_JECNominal, t.p_HadWH_mavjj_true_JECNominal, t.p_HadZH_mavjj_JECNominal, t.p_HadZH_mavjj_true_JECNominal, t.JetPhi, t.ZZMass, t.ZZPt, t.PFMET, t.PhotonIsCutBasedLooseID, t.PhotonPt, False, False, spline_list)
-	          eventTag.append(tag)
+		  # Signal VBF variables that will fail
+		  if t.pConst_JJVBF_S_SIG_ghv1_1_MCFM_JECNominal * t.pConst_HadZH_S_SIG_ghz1_1_MCFM_JECNominal * t.pConst_HadWH_S_SIG_ghw1_1_MCFM_JECNominal * t.pConst_JJVBF_S_SIG_ghv1_1_MCFM_JECNominal * t.pConst_HadZH_S_SIG_ghz1_1_MCFM_JECNominal * t.pConst_HadWH_S_SIG_ghw1_1_MCFM_JECNominal == 0:
+		    eventTag.append(-999)
+                  # Bkg VBF variables that will fail 
+		  elif t.pConst_JJVBF_BKG_MCFM_JECNominal * t.pConst_HadZH_BKG_MCFM_JECNominal * t.pConst_HadWH_BKG_MCFM_JECNominal * t.pConst_JJQCD_BKG_MCFM_JECNominal * t.pConst_JJVBF_BKG_MCFM_JECNominal * t.pConst_HadZH_BKG_MCFM_JECNominal * t.pConst_HadWH_BKG_MCFM_JECNominal * t.pConst_JJQCD_BKG_MCFM_JECNominal == 0:
+		    eventTag.append(-999)
+		  # QCD Scale variables that will fail #
+		  elif t.p_HadZH_mavjj_true_JECNominal * t.p_HadWH_mavjj_true_JECNominal == 0:
+		    eventTag.append(-999)
+		  # VBF 1 Jet and VBF 2 jet variables that will fail #
+		  elif t.p_JVBF_SIG_ghv1_1_JHUGen_JECNominal * t.pAux_JVBF_SIG_ghv1_1_JHUGen_JECNominal == 0:
+		    eventTag.append(-999)
+		  # WH and Vh variables that will fail #
+		  elif t.p_HadWH_mavjj_JECNominal * t.p_HadWH_SIG_ghw1_1_JHUGen_JECNominal * t.p_HadZH_mavjj_JECNominal * t.p_HadZH_SIG_ghz1_1_JHUGen_JECNominal == 0:
+		    eventTag.append(-999)
+		  else:
+        	    tag =  Tag(t.nExtraLep, t.nExtraZ, t.nCleanedJetsPt30, t.nCleanedJetsPt30BTagged_bTagSF, t.JetQGLikelihood, t.p_JJQCD_SIG_ghg2_1_JHUGen_JECNominal, t.p_JQCD_SIG_ghg2_1_JHUGen_JECNominal, t.p_JJVBF_SIG_ghv1_1_JHUGen_JECNominal, t.p_JVBF_SIG_ghv1_1_JHUGen_JECNominal, t.pAux_JVBF_SIG_ghv1_1_JHUGen_JECNominal, t.p_HadWH_SIG_ghw1_1_JHUGen_JECNominal, t.p_HadZH_SIG_ghz1_1_JHUGen_JECNominal, t.p_HadWH_mavjj_JECNominal, t.p_HadWH_mavjj_true_JECNominal, t.p_HadZH_mavjj_JECNominal, t.p_HadZH_mavjj_true_JECNominal, t.JetPhi, t.ZZMass, t.ZZPt, t.PFMET, t.PhotonIsCutBasedLooseID, t.PhotonPt, False, False, spline_list)
+	            eventTag.append(tag)
 	#========================== Cropping the tree to remove branches you dont want ====================	
 	for branchname in treebranches:
           if branchname not in branchlist:
@@ -126,8 +146,10 @@ def main(argv):
 	ftagtree = ROOT.TFile.Open(tagtreefilename, "CREATE")
 	newtree = t.CloneTree()
 	#========================= Load up the branches you want to add =====================
-        np_event_tag=np.array(eventTag,dtype=[('tag',np.int32)])
-        array2tree(np_event_tag,tree=newtree)
+	tag=np.array(eventTag,dtype=[('tag',np.int32)])
+	Bin40=np.array(Bin40,dtype=[('Bin40',np.float)])
+        array2tree(tag,tree=newtree)
+	array2tree(Bin40,tree=newtree)
 	newtree.Write()   
 	# clean up TTags #
 	#ftagtree.Delete("*;1")
